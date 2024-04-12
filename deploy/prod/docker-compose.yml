@@ -7,12 +7,15 @@ services:
     restart: always
     volumes:
       - mongodb:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: insighter_prod
-      MONGO_INITDB_ROOT_PASSWORD: toTxH0aLcNCplv4icwRQA3nUvR
+
     networks:
       - app_network
 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    env_file:
+      - .env
 volumes:
   mongodb:
 

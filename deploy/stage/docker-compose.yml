@@ -10,8 +10,10 @@ services:
     networks:
       - stage_network
     environment:
-      MONGO_INITDB_ROOT_USERNAME: insighter_stage
-      MONGO_INITDB_ROOT_PASSWORD: 06nRVUHGoZyVCkpdrkU6UktLuJ
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    env_file:
+      - .env
 
 volumes:
   mongodb:
