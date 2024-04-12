@@ -1,0 +1,37 @@
+name: Insighter production deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+
+
+
+ #pull и деплой на серевере
+    deploy_docker:
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: |
+              deploy/prod/docker-compose.yml
+            sparse-checkout-cone-mode: false
+        - name: Load SSH aws key
+          uses: webfactory/ssh-agent@v0.9.0
+          with:
+            ssh-private-key: ${{secrets.PRODUCTION_SERVER_PRIVAT_KEY}}
+        - name: Add SSH key to known_hosts
+          run: ssh-keyscan -H "${{vars.PRODUCTION_SERVER_HOST}}" >> ~/.ssh/known_hosts
+
+        - name: Deploy
+          run: |
+            echo "${{vars.PRODUCTION_ENV_FILE}}" >> ./deploy/prod/.env
+            docker context create prod_context --docker "host=ssh://${{vars.PRODUCTION_SERVER_SSH_ROUTE}}" || true
+            docker --context prod_context compose -f deploy/prod/docker-compose.yml down 
+            docker --context prod_context system prune -af
+            docker --context prod_context compose -f deploy/prod/docker-compose.yml up -d --wait --wait-timeout 60
+
+    
+    
