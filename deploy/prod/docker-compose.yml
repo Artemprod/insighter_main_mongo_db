@@ -3,7 +3,7 @@ services:
   mongo_insight:
     image: mongo
     ports:
-      - "7675:27017"
+      - "7080:27017"
     restart: always
     volumes:
       - mongodb:/data/db
