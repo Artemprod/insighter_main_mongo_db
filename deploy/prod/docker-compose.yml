@@ -6,10 +6,16 @@ services:
       - "7675:27017"
     restart: always
     volumes:
-      - mongodb:/DB/Mongo/data/db
+      - mongodb:/data/db
+
     networks:
       - app_network
 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    env_file:
+      - .env
 volumes:
   mongodb:
 

@@ -4,13 +4,8 @@ on:
     branches:
       - main
 jobs:
-
-
-
- #pull и деплой на серевере
     deploy_docker:
       runs-on: ubuntu-latest
-      needs: build
       steps:
         - name: Checkout
           uses: actions/checkout@v4
@@ -27,7 +22,8 @@ jobs:
 
         - name: Deploy
           run: |
-            echo "${{vars.PRODUCTION_ENV_FILE}}" >> ./deploy/prod/.env
+            echo "${{vars.PROD_DATABSE_ENV_FILE}}" >> ./deploy/prod/.env
+           
             docker context create prod_context --docker "host=ssh://${{vars.PRODUCTION_SERVER_SSH_ROUTE}}" || true
             docker --context prod_context compose -f deploy/prod/docker-compose.yml down 
             docker --context prod_context system prune -af
