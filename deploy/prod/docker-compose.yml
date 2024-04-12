@@ -6,7 +6,10 @@ services:
       - "7080:27017"
     restart: always
     volumes:
-      - mongodb:/DB/Mongo/data/db
+      - mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: insighter_prod
+      MONGO_INITDB_ROOT_PASSWORD: toTxH0aLcNCplv4icwRQA3nUvR
     networks:
       - app_network
 
