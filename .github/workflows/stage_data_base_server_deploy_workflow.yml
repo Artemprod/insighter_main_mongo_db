@@ -23,10 +23,7 @@ jobs:
         - name: Deploy
           run: |
             echo "${{vars.STAGE_DATABSE_ENV_FILE}}" >> ./deploy/stage/.env
-            cat ./deploy/stage/.env
             docker context create stage_context --docker "host=ssh://${{vars.STAGE_SSH_ADRESS}}" || true
-            docker --context stage_context compose -f deploy/stage/docker-compose.yml down 
+            docker --context stage_context compose -f deploy/stage/docker-compose.yml down --rmi all
             docker --context stage_context compose -f deploy/stage/docker-compose.yml up -d --wait --wait-timeout 60
 
-    
-    
